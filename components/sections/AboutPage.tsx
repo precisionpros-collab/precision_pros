@@ -3,9 +3,9 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion, useInView, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Target, Rocket, Users, Layers } from "lucide-react"
-import { Linkedin, Instagram } from "@/components/ui/SocialIcons"
 import { cn } from '@/lib/utils'
 import { defaultTeam } from '@/lib/data'
+import { Linkedin, Instagram } from "@/components/ui/SocialIcons"
 
 interface TeamMember {
   id: string
@@ -169,7 +169,11 @@ function TeamCollage({ team }: { team: TeamMember[] }) {
   const animateFrames = collageInView && !reducedMotion && hoveredIndex === null
 
   return (
-    <div ref={collageRef} className="relative w-full h-[400px] sm:h-[480px] md:h-[550px] lg:h-[600px] rounded-3xl overflow-visible">
+    <div
+      ref={collageRef}
+      className="relative w-full h-[400px] sm:h-[480px] md:h-[550px] lg:h-[600px] rounded-3xl overflow-visible"
+      onTouchStart={() => setHoveredIndex(null)}
+    >
       {/* Decorative radial background glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(171,87,255,0.06)_0%,transparent_60%)] pointer-events-none rounded-3xl" />
       
@@ -187,6 +191,13 @@ function TeamCollage({ team }: { team: TeamMember[] }) {
               placement.size,
               isDimmed ? "opacity-35 scale-[0.96]" : "opacity-100 scale-100"
             )}
+            onMouseEnter={() => setHoveredIndex(i)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            onTouchStart={(e) => {
+              e.stopPropagation()
+              if (hoveredIndex === i) setHoveredIndex(null)
+              else setHoveredIndex(i)
+            }}
             style={{
               top: placement.top,
               left: placement.left,
@@ -216,10 +227,20 @@ function TeamCollage({ team }: { team: TeamMember[] }) {
                 delay: i * 0.1
               }
             }}
-            onMouseEnter={() => setHoveredIndex(i)}
-            onMouseLeave={() => setHoveredIndex(null)}
           >
-            <div className="w-full h-full rounded-2xl overflow-hidden relative border border-white/5 bg-zinc-900 shadow-inner flex items-center justify-center">
+            {/* The Image Wrapper Frame - pops out on hover/touch */}
+            <motion.div
+              animate={{
+                y: isHovered ? -28 : 0,
+                scale: isHovered ? 1.15 : 1,
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 20,
+              }}
+              className="w-full h-full rounded-2xl overflow-hidden relative border border-white/5 bg-zinc-900 shadow-inner flex items-center justify-center"
+            >
               <AnimatePresence mode="wait">
                 <motion.img
                   key={member.id}
@@ -235,30 +256,49 @@ function TeamCollage({ team }: { team: TeamMember[] }) {
                   }}
                 />
               </AnimatePresence>
-            </div>
+            </motion.div>
 
+            {/* The Details Box sliding down below */}
             <AnimatePresence>
               {isHovered && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.85, y: 15 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.85, y: 15 }}
-                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 z-50 w-56 p-4 rounded-2xl border border-sky-500/30 bg-[#0a0a0a]/98 backdrop-blur-lg text-left shadow-[0_15px_40px_rgba(0,0,0,0.8),0_0_20px_rgba(56,189,248,0.15)] pointer-events-auto"
+                  initial={{ opacity: 0, y: -10, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 8, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                  transition={{ duration: 0.22, ease: 'easeOut' }}
+                  className="absolute top-[102%] left-1/2 -translate-x-1/2 w-48 p-3.5 rounded-2xl border border-primary/20 bg-[#0a0515]/98 backdrop-blur-md text-center shadow-[0_15px_35px_rgba(0,0,0,0.8),0_0_20px_rgba(171,87,255,0.15)] pointer-events-auto"
                 >
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-3.5 h-3.5 rotate-45 border-r border-b border-primary/30 bg-[#0a0a0a]" />
-                  <div className="font-display font-bold text-base text-[#f5efe6] leading-tight mb-0.5">{member.name}</div>
-                  <div className="font-mono text-[9px] tracking-widest text-primary uppercase font-semibold mb-1.5">{member.role || 'Pro'}</div>
-                  <div className="font-body text-xs text-[#a09888] leading-relaxed mb-3">{member.designation}</div>
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 border-l border-t border-primary/20 bg-[#0a0515] -mb-1.5" />
                   
-                  <div className="flex gap-2">
+                  <div className="font-display font-bold text-sm text-[#f5efe6] truncate leading-tight">
+                    {member.name}
+                  </div>
+                  <div className="font-mono text-[9px] tracking-wider text-primary uppercase font-semibold mt-0.5">
+                    {member.role || 'Pro'}
+                  </div>
+                  <div className="font-body text-[10px] text-[#a09888] leading-tight mt-1 line-clamp-2">
+                    {member.designation}
+                  </div>
+                  
+                  <div className="flex justify-center gap-2 mt-2.5">
                     {member.linkedin_url && (
-                      <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-primary/10 hover:border-primary/35 text-[#a09888] hover:text-primary transition-all">
-                        <Linkedin size={11} />
+                      <a
+                        href={member.linkedin_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1 rounded bg-white/5 border border-white/10 hover:bg-primary/10 hover:border-primary/30 text-[#a09888] hover:text-primary transition-all"
+                      >
+                        <Linkedin size={10} />
                       </a>
                     )}
                     {member.instagram_url && (
-                      <a href={member.instagram_url} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-primary/10 hover:border-primary/35 text-[#a09888] hover:text-primary transition-all">
-                        <Instagram size={11} />
+                      <a
+                        href={member.instagram_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1 rounded bg-white/5 border border-white/10 hover:bg-primary/10 hover:border-primary/30 text-[#a09888] hover:text-primary transition-all"
+                      >
+                        <Instagram size={10} />
                       </a>
                     )}
                   </div>

@@ -6,8 +6,7 @@ import { upsertService, toggleVisibility, deleteItem } from '@/lib/actions'
 import { SortableList } from '@/components/admin/SortableList'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-
-interface Service { id: string; title: string; description: string; icon: string; category?: string; features: string[]; is_visible: boolean }
+import { Service } from '@/types'
 
 interface ServicesClientProps {
   services: Service[]

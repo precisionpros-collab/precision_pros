@@ -7,12 +7,7 @@ import { ImageUpload } from '@/components/admin/ImageUpload'
 import { SortableList } from '@/components/admin/SortableList'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
-
-interface Work {
-  id: string; title: string; description: string; tags: string[]; category: string
-  is_featured: boolean; is_visible: boolean; client_name: string | null
-  project_url: string | null; image_url: string | null
-}
+import { Work } from '@/types'
 
 interface ProjectsClientProps {
   works: Work[]

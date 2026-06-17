@@ -7,17 +7,9 @@ import { Linkedin, Instagram } from '@/components/ui/SocialIcons'
 import { use3DTilt } from '@/hooks/use3DTilt'
 import { Container } from '@/components/ui/Container'
 import { SectionHeader } from '@/components/ui/SectionHeader'
+import { TeamMember } from '@/types'
 
-interface Member {
-  id: string
-  name: string
-  designation: string
-  photo_url: string | null
-  linkedin_url: string | null
-  instagram_url?: string | null
-}
-
-function TeamMemberOverflowCard({ member, index }: { member: Member; index: number }) {
+function TeamMemberOverflowCard({ member, index }: { member: TeamMember; index: number }) {
   const tiltRef = use3DTilt(4, 1.015)
 
   return (
@@ -59,7 +51,7 @@ function TeamMemberOverflowCard({ member, index }: { member: Member; index: numb
   )
 }
 
-export function TeamOverflowPage({ members }: { members: Member[] }) {
+export function TeamOverflowPage({ members }: { members: TeamMember[] }) {
   return (
     <div className="min-h-screen section-padding">
       <Container>

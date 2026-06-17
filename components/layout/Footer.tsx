@@ -3,19 +3,31 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Logo } from '@/components/ui/Logo'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, MapPin, Mail, MessageCircle } from 'lucide-react'
 import { Linkedin, Instagram, Youtube } from '@/components/ui/SocialIcons'
 import { Container } from '@/components/ui/Container'
 
 interface FooterProps { settings?: Record<string, string> }
 
+function cleanPhone(num: string) {
+  return num.replace(/[^\d+]/g, '')
+}
 
+function whatsappLink(num: string) {
+  const clean = cleanPhone(num)
+  const digits = clean.startsWith('+') ? clean.slice(1) : clean
+  return `https://wa.me/${digits}`
+}
 
 export function Footer({ settings }: FooterProps) {
 
   const instagram = settings?.instagram || 'https://instagram.com/precisionpros'
   const linkedin = settings?.linkedin || 'https://linkedin.com/company/precisionpros'
   const youtube = settings?.youtube || 'https://youtube.com/@precisionpros'
+  const email = settings?.email || 'hello@precisionpros.in'
+  const phone = settings?.phone || '+91 98765 43210'
+  const whatsapp = settings?.whatsapp || phone
+  const address = settings?.address || 'Chennai, Tamil Nadu, India'
 
   return (
     <footer className="relative border-t border-border/20 overflow-hidden" id="footer-section">
@@ -28,7 +40,7 @@ export function Footer({ settings }: FooterProps) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-8 flex flex-col gap-6"
+            className="lg:col-span-6 flex flex-col gap-6"
           >
             <Logo size="md" />
             <p className="text-body text-sm leading-relaxed max-w-sm">
@@ -59,7 +71,7 @@ export function Footer({ settings }: FooterProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="lg:col-span-4"
+            className="lg:col-span-3"
           >
             <h4 className="font-display font-bold text-sm tracking-[0.15em] text-heading uppercase mb-6">Navigate</h4>
             <ul className="space-y-3">
@@ -81,6 +93,42 @@ export function Footer({ settings }: FooterProps) {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-3"
+          >
+            <h4 className="font-display font-bold text-sm tracking-[0.15em] text-heading uppercase mb-6">Contact</h4>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3 text-sm text-body">
+                <MapPin size={16} className="text-primary mt-0.5 shrink-0 animate-pulse" />
+                <span className="leading-relaxed">{address}</span>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${email}`}
+                  className="flex items-center gap-3 text-sm text-body hover:text-primary transition-colors duration-300 group"
+                >
+                  <Mail size={16} className="text-primary shrink-0 group-hover:scale-110 transition-transform" />
+                  <span className="break-all">{email}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={whatsappLink(whatsapp)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-sm text-body hover:text-emerald-400 transition-colors duration-300 group"
+                >
+                  <MessageCircle size={16} className="text-emerald-500 shrink-0 group-hover:scale-110 transition-transform" />
+                  <span>{whatsapp}</span>
+                </a>
+              </li>
             </ul>
           </motion.div>
 

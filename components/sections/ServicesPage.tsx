@@ -102,17 +102,23 @@ export function ServicesPage({ services }: { services: Service[] }) {
         </motion.div>
 
         <div className="relative pb-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6">
             {PROVIDE_PIPELINE.map((step, i) => (
               <motion.div key={step.title}
-                initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                transition={{ delay: i * 0.12, duration: 0.6 }}
-                className="relative flex-1 p-8 text-center group">
-                <div className="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-[#ab57ff]/20 to-[#5dc1a4]/5 flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
-                  <step.icon size={28} className="text-primary" />
-                </div>
-                <h4 className="font-display font-bold text-lg mb-2 text-heading">{step.title}</h4>
-                <p className="font-body text-sm text-body leading-relaxed max-w-[180px] mx-auto">{step.desc}</p>
+                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.6 }}
+                className={cn(
+                  "h-full",
+                  i === 4 ? "col-span-2 md:col-span-1" : ""
+                )}
+              >
+                <GlassCard className="p-4 sm:p-6 md:p-8 text-center h-full flex flex-col items-center justify-start min-h-[170px] sm:min-h-[200px]">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-5 rounded-2xl bg-gradient-to-br from-[#ab57ff]/20 to-[#5dc1a4]/5 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                    <step.icon className="text-primary w-5 h-5 sm:w-7 sm:h-7" />
+                  </div>
+                  <h4 className="font-display font-bold text-sm sm:text-base md:text-lg mb-1 sm:mb-2 text-heading group-hover:text-primary transition-colors duration-300">{step.title}</h4>
+                  <p className="font-body text-xs sm:text-sm text-body leading-relaxed max-w-[180px] mx-auto">{step.desc}</p>
+                </GlassCard>
               </motion.div>
             ))}
           </div>

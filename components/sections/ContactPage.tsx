@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { Mail, Phone, MessageCircle, Send, Loader2, CheckCircle2 } from "lucide-react"
 import { Linkedin, Instagram, Youtube } from '@/components/ui/SocialIcons'
 import { submitContactForm } from '@/lib/actions'
@@ -29,7 +29,6 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
   const inView = useInView(ref, { once: true, margin: '-100px' })
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service_type: '', message: '' })
 
   const email = settings?.email || 'hello@precisionpros.in'
@@ -49,6 +48,7 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+    if (submitted) setSubmitted(false)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,7 +61,7 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
     try {
       await submitContactForm(form)
       setSubmitted(true)
-      setShowSuccessModal(true)
+      setForm({ name: '', email: '', phone: '', company: '', service_type: '', message: '' })
       confettiRef.current?.trigger()
       toast.success('Message sent! We\'ll get back to you soon.')
     } catch {
@@ -140,20 +140,20 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
         }
       ` }} />
 
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-10 sm:mb-16 md:mb-20">
           <div className="flex items-center gap-3 mb-5">
             <div className="w-8 h-px bg-primary" />
             <span className="font-mono text-xs text-primary tracking-widest uppercase">Contact</span>
           </div>
-          <h2 className="font-display font-semibold text-5xl md:text-6xl leading-tight mb-6 text-heading">
+          <h2 className="font-display font-semibold text-3xl sm:text-4xl md:text-6xl leading-tight mb-4 sm:mb-6 text-heading">
             Let&apos;s Build Something<br />
             <span className="italic text-premium-shimmer font-bold">Extraordinary</span>
           </h2>
-          <p className="font-body text-lg text-body max-w-xl">Ready to turn your vision into reality? Reach out to start our collaboration.</p>
+          <p className="font-body text-base sm:text-lg text-body max-w-xl">Ready to turn your vision into reality? Reach out to start our collaboration.</p>
         </motion.div>
 
-        <div ref={ref} className="grid lg:grid-cols-2 gap-16">
+        <div ref={ref} className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
           <motion.div initial={{ opacity: 0, x: -30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
             <div className="space-y-4 mb-12">
               {/* WhatsApp Card */}
@@ -161,77 +161,77 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
                 href={whatsappLink(whatsapp)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="glitter-hover-card flex items-center gap-4 p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-200 group hover:-translate-y-0.5 hover:shadow-lg"
+                className="glitter-hover-card flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-200 group hover:-translate-y-0.5 hover:shadow-lg"
               >
-                <div className="p-3.5 rounded-xl bg-card border border-border/30 text-emerald-600 group-hover:scale-105 transition-transform duration-300">
+                <div className="p-3.5 rounded-xl bg-card border border-border/30 text-emerald-600 group-hover:scale-105 transition-transform duration-300 shrink-0">
                   <MessageCircle size={20} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="font-mono text-[10px] text-body tracking-widest uppercase mb-0.5">WhatsApp</p>
-                  <p className="font-body text-sm font-bold text-heading group-hover:text-emerald-400 transition-colors duration-300">{whatsapp}</p>
+                  <p className="font-body text-sm font-bold text-heading group-hover:text-emerald-400 transition-colors duration-300 break-all">{whatsapp}</p>
                 </div>
-                <span className="ml-auto text-muted-foreground/40 group-hover:text-emerald-500 transition-colors text-lg">→</span>
+                <span className="ml-auto text-muted-foreground/40 group-hover:text-emerald-500 transition-colors text-lg shrink-0">→</span>
               </a>
 
               {/* Phone 1 Card */}
               <a
                 href={`tel:${cleanPhone(phone)}`}
-                className="glitter-hover-card flex items-center gap-4 p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-200 group hover:-translate-y-0.5 hover:shadow-lg"
+                className="glitter-hover-card flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-200 group hover:-translate-y-0.5 hover:shadow-lg"
               >
-                <div className="p-3.5 rounded-xl bg-card border border-border/30 text-blue-600 group-hover:scale-105 transition-transform duration-300">
+                <div className="p-3.5 rounded-xl bg-card border border-border/30 text-blue-600 group-hover:scale-105 transition-transform duration-300 shrink-0">
                   <Phone size={20} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="font-mono text-[10px] text-body tracking-widest uppercase mb-0.5">Phone 1</p>
-                  <p className="font-body text-sm font-bold text-heading group-hover:text-blue-400 transition-colors duration-300">{phone}</p>
+                  <p className="font-body text-sm font-bold text-heading group-hover:text-blue-400 transition-colors duration-300 break-all">{phone}</p>
                 </div>
-                <span className="ml-auto text-muted-foreground/40 group-hover:text-blue-500 transition-colors text-lg">→</span>
+                <span className="ml-auto text-muted-foreground/40 group-hover:text-blue-500 transition-colors text-lg shrink-0">→</span>
               </a>
 
               {/* Phone 2 Card */}
               {phone2 && (
                 <a
                   href={`tel:${cleanPhone(phone2)}`}
-                  className="glitter-hover-card flex items-center gap-4 p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-200 group hover:-translate-y-0.5 hover:shadow-lg"
+                  className="glitter-hover-card flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-200 group hover:-translate-y-0.5 hover:shadow-lg"
                 >
-                  <div className="p-3.5 rounded-xl bg-card border border-border/30 text-blue-600 group-hover:scale-105 transition-transform duration-300">
+                  <div className="p-3.5 rounded-xl bg-card border border-border/30 text-blue-600 group-hover:scale-105 transition-transform duration-300 shrink-0">
                     <Phone size={20} />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <p className="font-mono text-[10px] text-body tracking-widest uppercase mb-0.5">Phone 2</p>
-                    <p className="font-body text-sm font-bold text-heading group-hover:text-blue-400 transition-colors duration-300">{phone2}</p>
+                    <p className="font-body text-sm font-bold text-heading group-hover:text-blue-400 transition-colors duration-300 break-all">{phone2}</p>
                   </div>
-                  <span className="ml-auto text-muted-foreground/40 group-hover:text-blue-500 transition-colors text-lg">→</span>
+                  <span className="ml-auto text-muted-foreground/40 group-hover:text-blue-500 transition-colors text-lg shrink-0">→</span>
                 </a>
               )}
 
               {/* Email Card */}
               <a
                 href={`mailto:${email}`}
-                className="glitter-hover-card flex items-center gap-4 p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-200 group hover:-translate-y-0.5 hover:shadow-lg"
+                className="glitter-hover-card flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm transition-all duration-200 group hover:-translate-y-0.5 hover:shadow-lg"
               >
-                <div className="p-3.5 rounded-xl bg-card border border-border/30 text-primary group-hover:scale-105 transition-transform duration-300">
+                <div className="p-3.5 rounded-xl bg-card border border-border/30 text-primary group-hover:scale-105 transition-transform duration-300 shrink-0">
                   <Mail size={20} />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="font-mono text-[10px] text-body tracking-widest uppercase mb-0.5">Email Address</p>
-                  <p className="font-body text-sm font-bold text-heading group-hover:text-primary transition-colors duration-300">{email}</p>
+                  <p className="font-body text-sm font-bold text-heading group-hover:text-primary transition-colors duration-300 break-all">{email}</p>
                 </div>
-                <span className="ml-auto text-muted-foreground/40 group-hover:text-primary transition-colors text-lg">→</span>
+                <span className="ml-auto text-muted-foreground/40 group-hover:text-primary transition-colors text-lg shrink-0">→</span>
               </a>
             </div>
 
             <div>
               <p className="font-mono text-xs text-body tracking-widest uppercase mb-5">Follow Our Journey</p>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 {[
                   { icon: Instagram, href: instagram, label: 'Instagram' },
                   { icon: Linkedin, href: linkedin, label: 'LinkedIn' },
                   { icon: Youtube, href: youtube, label: 'YouTube' },
                 ].map(({ icon: Icon, href, label }) => (
                   <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 px-5 py-3 rounded-xl border border-border/50 bg-card/60 hover:border-primary/30 hover:bg-primary/5 text-body hover:text-primary transition-all text-sm font-medium">
-                    <Icon size={18} /> {label}
+                    className="flex items-center gap-2 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-border/50 bg-card/60 hover:border-primary/30 hover:bg-primary/5 text-body hover:text-primary transition-all text-xs sm:text-sm font-medium">
+                    <Icon size={18} className="shrink-0" /> {label}
                   </a>
                 ))}
               </div>
@@ -239,88 +239,55 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.1 }}>
-            {submitted ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-12 rounded-3xl border border-primary/15 bg-primary/5 backdrop-blur-sm">
-                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 border border-primary/20">
-                  <CheckCircle2 size={30} className="text-primary animate-pulse" />
-                </div>
-                <h3 className="font-display text-2xl font-bold text-heading mb-3">Transmission Received</h3>
-                <p className="font-body text-[#a09888] leading-relaxed max-w-sm">
-                  Your project inquiry has been queued. Our technical division will review the details and contact you via email or phone within 24 hours.
-                </p>
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-border/50 bg-card/60 backdrop-blur-md">
+              <div className="grid sm:grid-cols-2 gap-5">
+                <Field label="Full Name *" name="name" type="text" placeholder="Your name" value={form.name} onChange={handleChange} />
+                <Field label="Email *" name="email" type="email" placeholder="your@email.com" value={form.email} onChange={handleChange} />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5 p-8 rounded-3xl border border-border/50 bg-card/60 backdrop-blur-md">
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <Field label="Full Name *" name="name" type="text" placeholder="Your name" value={form.name} onChange={handleChange} />
-                  <Field label="Email *" name="email" type="email" placeholder="your@email.com" value={form.email} onChange={handleChange} />
-                </div>
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <Field label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={handleChange} />
-                  <Field label="Company" name="company" type="text" placeholder="Your company (optional)" value={form.company} onChange={handleChange} />
-                </div>
-                <div>
-                  <label className="block font-mono text-[11px] text-body tracking-widest uppercase mb-2 font-semibold">Service Required *</label>
-                  <select name="service_type" value={form.service_type} onChange={handleChange}
-                    className="w-full px-4 py-3.5 rounded-xl border border-border bg-card text-heading font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
-                    <option value="">Select a service</option>
-                    {types.map(s => <option key={s} value={s}>{s}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="block font-mono text-[11px] text-body tracking-widest uppercase mb-2 font-semibold">Project Details *</label>
-                  <textarea name="message" value={form.message} onChange={handleChange} rows={5}
-                    placeholder="Describe your project, goals, timeline, and requirements..."
-                    className="w-full px-4 py-3.5 rounded-xl border border-border bg-card text-heading font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" />
-                </div>
-                <button type="submit" disabled={loading}
-                  className="w-full flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#e3c8a8] via-[#5dc1a4] to-[#ab57ff] text-[#05020c] font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/25 disabled:opacity-60 transition-all">
-                  {loading ? <><Loader2 size={18} className="animate-spin" /> Sending...</> : <><Send size={16} /> Send Message</>}
-                </button>
-              </form>
-            )}
+              <div className="grid sm:grid-cols-2 gap-5">
+                <Field label="Phone" name="phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={handleChange} />
+                <Field label="Company" name="company" type="text" placeholder="Your company (optional)" value={form.company} onChange={handleChange} />
+              </div>
+              <div>
+                <label className="block font-mono text-[11px] text-body tracking-widest uppercase mb-2 font-semibold">Service Required *</label>
+                <select name="service_type" value={form.service_type} onChange={handleChange}
+                  className="w-full px-4 py-3.5 rounded-xl border border-border bg-card text-heading font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
+                  <option value="" style={{ backgroundColor: '#0c0717', color: '#f5efe6' }}>Select a service</option>
+                  {types.map(s => (
+                    <option key={s} value={s} style={{ backgroundColor: '#0c0717', color: '#f5efe6' }}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block font-mono text-[11px] text-body tracking-widest uppercase mb-2 font-semibold">Project Details *</label>
+                <textarea name="message" value={form.message} onChange={handleChange} rows={5}
+                  placeholder="Describe your project, goals, timeline, and requirements (must be at least 10 characters)..."
+                  className="w-full px-4 py-3.5 rounded-xl border border-border bg-card text-heading font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" />
+                <p className="text-[10px] text-[#a09888]/60 mt-1 font-mono">Minimum 10 characters required.</p>
+              </div>
+              <button type="submit" disabled={loading}
+                className="w-full flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-[#e3c8a8] via-[#5dc1a4] to-[#ab57ff] text-[#05020c] font-bold rounded-2xl hover:shadow-xl hover:shadow-primary/25 disabled:opacity-60 transition-all">
+                {loading ? <><Loader2 size={18} className="animate-spin" /> Sending...</> : <><Send size={16} /> Send Message</>}
+              </button>
+
+              {submitted && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 justify-center text-center p-3.5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 mt-3"
+                >
+                  <CheckCircle2 size={16} className="text-emerald-500 animate-pulse" />
+                  <p className="font-body text-xs text-emerald-400 font-medium">
+                    Thank you! Your message has been sent. We will contact you within 24 hours.
+                  </p>
+                </motion.div>
+              )}
+            </form>
           </motion.div>
         </div>
       </div>
-
-      {/* Success Popup Modal */}
-      <AnimatePresence>
-        {showSuccessModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-[#000000]/75 backdrop-blur-md flex items-center justify-center p-6"
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 20 }}
-              transition={{ type: 'spring', damping: 15 }}
-              className="w-full max-w-md bg-[#0c0717]/95 border border-[#ab57ff]/20 rounded-3xl p-8 text-center shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(171,87,255,0.15)] flex flex-col items-center relative overflow-hidden"
-            >
-              {/* Glow decoration */}
-              <div className="absolute -top-20 -left-20 w-44 h-44 rounded-full bg-primary/10 blur-[80px]" />
-
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 border border-primary/20">
-                <CheckCircle2 size={30} className="text-primary animate-bounce" />
-              </div>
-
-              <h3 className="font-display text-2xl font-bold text-[#f5efe6] mb-3">Transmission Successful</h3>
-              <p className="font-body text-sm text-[#a09888] leading-relaxed mb-8 max-w-xs">
-                Thank you for reaching out. We have received your project details and will contact you via email or phone within 24 hours.
-              </p>
-
-              <button
-                onClick={() => setShowSuccessModal(false)}
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#e3c8a8] via-[#5dc1a4] to-[#ab57ff] text-[#05020c] font-bold text-sm hover:shadow-xl hover:shadow-primary/25 hover:-translate-y-0.5 transition-all duration-200"
-              >
-                Acknowledge & Close
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   )
 }

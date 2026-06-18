@@ -51,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-scroll-behavior="smooth"
       className={`${cormorant.variable} ${dmSans.variable} ${jetbrains.variable} ${playfair.variable}`}
     >
-      <body className="grain antialiased">
+      <body className="grain antialiased" suppressHydrationWarning>
         <ThemeProvider>
           <AppBackground />
           <HiddenAdminEntry />

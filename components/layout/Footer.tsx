@@ -34,13 +34,13 @@ export function Footer({ settings }: FooterProps) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,hsl(var(--primary)/0.08),transparent_70%)] pointer-events-none" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-      <Container className="relative pt-20 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 mb-16">
+      <Container className="relative pt-12 sm:pt-20 pb-8 sm:pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 md:gap-12 lg:gap-16 mb-10 sm:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="lg:col-span-6 flex flex-col gap-6"
+            className="md:col-span-2 lg:col-span-6 flex flex-col gap-6"
           >
             <Logo size="md" />
             <p className="text-body text-sm leading-relaxed max-w-sm">
@@ -71,7 +71,7 @@ export function Footer({ settings }: FooterProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="lg:col-span-3"
+            className="md:col-span-1 lg:col-span-3"
           >
             <h4 className="font-display font-bold text-sm tracking-[0.15em] text-heading uppercase mb-6">Navigate</h4>
             <ul className="space-y-3">
@@ -101,7 +101,7 @@ export function Footer({ settings }: FooterProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="lg:col-span-3"
+            className="md:col-span-1 lg:col-span-3"
           >
             <h4 className="font-display font-bold text-sm tracking-[0.15em] text-heading uppercase mb-6">Contact</h4>
             <ul className="space-y-4">

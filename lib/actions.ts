@@ -140,14 +140,22 @@ export async function submitContactForm(data: {
   service_type: string
   message: string
 }) {
-  const parsedData = contactRequestSchema.parse(data)
-  const { error } = await supabaseAdmin
-    .from('contact_requests')
-    .insert({ ...parsedData, status: 'new' })
+  try {
+    const parsedData = contactRequestSchema.parse(data)
+    const { error } = await supabaseAdmin
+      .from('contact_requests')
+      .insert({ ...parsedData, status: 'new' })
 
-  if (error) throw new Error(error.message)
-  await afterMutation()
-  return { success: true }
+    if (error) {
+      console.error('DATABASE ERROR during submitContactForm:', error)
+      throw new Error(error.message)
+    }
+    await afterMutation()
+    return { success: true }
+  } catch (err) {
+    console.error('ERROR in submitContactForm Server Action:', err)
+    throw err
+  }
 }
 
 // ─── Analytics (public track + admin read) ───────────────────

@@ -213,9 +213,14 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
                 <div className="p-3.5 rounded-xl bg-card border border-border/30 text-primary group-hover:scale-105 transition-transform duration-300 shrink-0">
                   <Mail size={20} />
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="font-mono text-[10px] text-body tracking-widest uppercase mb-0.5">Email Address</p>
-                  <p className="font-body text-sm font-bold text-heading group-hover:text-primary transition-colors duration-300 break-all">{email}</p>
+                  <p 
+                    className="font-body font-bold text-heading group-hover:text-primary transition-colors duration-300 whitespace-nowrap truncate"
+                    style={{ fontSize: 'clamp(9px, 3.1vw, 14px)' }}
+                  >
+                    {email}
+                  </p>
                 </div>
                 <span className="ml-auto text-muted-foreground/40 group-hover:text-primary transition-colors text-lg shrink-0">→</span>
               </a>
@@ -223,15 +228,15 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
 
             <div>
               <p className="font-mono text-xs text-body tracking-widest uppercase mb-5">Follow Our Journey</p>
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-1.5 sm:gap-3 overflow-hidden">
                 {[
                   { icon: Instagram, href: instagram, label: 'Instagram' },
                   { icon: Linkedin, href: linkedin, label: 'LinkedIn' },
                   { icon: Youtube, href: youtube, label: 'YouTube' },
                 ].map(({ icon: Icon, href, label }) => (
                   <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl border border-border/50 bg-card/60 hover:border-primary/30 hover:bg-primary/5 text-body hover:text-primary transition-all text-xs sm:text-sm font-medium">
-                    <Icon size={18} className="shrink-0" /> {label}
+                    className="flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-border/50 bg-card/60 hover:border-primary/30 hover:bg-primary/5 text-body hover:text-primary transition-all text-[11px] sm:text-xs md:text-sm font-medium whitespace-nowrap flex-1 text-center">
+                    <Icon size={16} className="shrink-0" /> {label}
                   </a>
                 ))}
               </div>

@@ -79,7 +79,7 @@ export function Footer({ settings }: FooterProps) {
                 { label: 'Home', href: '#home' },
                 { label: 'Services', href: '#services' },
                 { label: 'Projects', href: '#works' },
-                { label: 'About & Team', href: '#about' },
+                { label: 'About', href: '#about' },
                 { label: 'Contact', href: '#contact' },
               ].map(item => (
                 <li key={item.href}>

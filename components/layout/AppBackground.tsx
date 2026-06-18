@@ -1,10 +1,30 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { ElegantMeshBackground } from './ElegantMeshBackground'
 import { ThreeDBackground } from './ThreeDBackground'
 
 export function AppBackground() {
   const pathname = usePathname()
+  const [isAtHero, setIsAtHero] = useState(true)
+
+  useEffect(() => {
+    if (pathname !== '/') {
+      setIsAtHero(false)
+      return
+    }
+
+    const handleScroll = () => {
+      // Transition past 70% of the viewport height (leaving the Hero section)
+      const threshold = window.innerHeight * 0.7
+      setIsAtHero(window.scrollY < threshold)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [pathname])
 
   // 1. Admin Portal (Light theme, no animations or canvas elements)
   if (pathname?.startsWith('/admin')) {
@@ -21,6 +41,34 @@ export function AppBackground() {
     )
   }
 
-  // 2. All Public Pages — common 3D data streams background
-  return <ThreeDBackground />
+  // 2. Public Pages: Cross-fade backgrounds based on viewport scroll location
+  return (
+    <>
+      <div 
+        className="transition-opacity duration-700 ease-in-out"
+        style={{ 
+          opacity: isAtHero ? 1 : 0, 
+          position: 'fixed', 
+          inset: 0, 
+          zIndex: 0, 
+          pointerEvents: 'none' 
+        }}
+      >
+        <ElegantMeshBackground />
+      </div>
+
+      <div 
+        className="transition-opacity duration-700 ease-in-out"
+        style={{ 
+          opacity: isAtHero ? 0 : 1, 
+          position: 'fixed', 
+          inset: 0, 
+          zIndex: 0, 
+          pointerEvents: 'none' 
+        }}
+      >
+        <ThreeDBackground />
+      </div>
+    </>
+  )
 }

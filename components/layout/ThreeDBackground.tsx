@@ -30,7 +30,7 @@ export function ThreeDBackground() {
   // Tunable visual parameters
   const DIM_BLUR_PX = 18
   const DIM_OPACITY = 0.9
-  const GENTLE_EXTRA = isMobile ? 6 : 16
+  const GENTLE_EXTRA = 16
   const GENTLE_SPEED_MIN = 0.15
   const GENTLE_SPEED_MAX = 0.6
 
@@ -72,7 +72,7 @@ export function ThreeDBackground() {
 
     const FOV = 500
     const CAMERA_DISTANCE = 600
-    const STREAM_COUNT = isMobile ? 8 : width < 1024 ? 18 : 28
+    const STREAM_COUNT = 28
     const CHAR_SET = '0123456789ABCDEF*#+='.split('')
 
     const streams: DataStream[] = []
@@ -206,6 +206,9 @@ export function ThreeDBackground() {
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
 
+      let lastFontKey = ''
+      let lastFillStyle = ''
+
       gentleStreams.forEach(stream => {
         stream.y += stream.speed
         if (stream.y > 900) {
@@ -238,10 +241,20 @@ export function ThreeDBackground() {
           const fadeOpacity = 1 - j / stream.length
           const opacity = depthOpacity * fadeOpacity * 0.5
 
-          ctx.font = `${isLead ? 'bold' : 'normal'} ${fontSize}px var(--font-mono, monospace)`
-          ctx.fillStyle = isLead
-            ? `rgba(200, 200, 200, ${opacity * 0.9})`
-            : `rgba(140, 150, 150, ${opacity * 0.6})`
+          const roundedSize = Math.round(fontSize)
+          const fontKey = `${isLead ? 'b' : 'n'}_${roundedSize}`
+          if (lastFontKey !== fontKey) {
+            ctx.font = `${isLead ? 'bold' : 'normal'} ${roundedSize}px var(--font-mono, monospace)`
+            lastFontKey = fontKey
+          }
+
+          const fillStyle = isLead
+            ? `rgba(200, 200, 200, ${(opacity * 0.9).toFixed(2)})`
+            : `rgba(140, 150, 150, ${(opacity * 0.6).toFixed(2)})`
+          if (lastFillStyle !== fillStyle) {
+            ctx.fillStyle = fillStyle
+            lastFillStyle = fillStyle
+          }
           ctx.fillText(stream.chars[j], sx, sy)
         }
       })
@@ -278,10 +291,20 @@ export function ThreeDBackground() {
           const fadeOpacity = 1 - j / stream.length
           const opacity = depthOpacity * fadeOpacity
 
-          ctx.font = `${isLead ? 'bold' : 'normal'} ${fontSize}px var(--font-mono, monospace)`
-          ctx.fillStyle = isLead
-            ? `rgba(227, 200, 168, ${opacity * 1.4})`
-            : `rgba(152, 168, 162, ${opacity * 0.7})`
+          const roundedSize = Math.round(fontSize)
+          const fontKey = `${isLead ? 'b' : 'n'}_${roundedSize}`
+          if (lastFontKey !== fontKey) {
+            ctx.font = `${isLead ? 'bold' : 'normal'} ${roundedSize}px var(--font-mono, monospace)`
+            lastFontKey = fontKey
+          }
+
+          const fillStyle = isLead
+            ? `rgba(227, 200, 168, ${(opacity * 1.4).toFixed(2)})`
+            : `rgba(152, 168, 162, ${(opacity * 0.7).toFixed(2)})`
+          if (lastFillStyle !== fillStyle) {
+            ctx.fillStyle = fillStyle
+            lastFillStyle = fillStyle
+          }
           ctx.fillText(stream.chars[j], sx, sy)
         }
       })

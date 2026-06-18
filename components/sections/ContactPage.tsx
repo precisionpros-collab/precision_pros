@@ -6,7 +6,6 @@ import { Mail, Phone, MessageCircle, Send, Loader2, CheckCircle2 } from "lucide-
 import { Linkedin, Instagram, Youtube } from '@/components/ui/SocialIcons'
 import { submitContactForm } from '@/lib/actions'
 import { Confetti, ConfettiRef } from '@/components/ui/Confetti'
-import { toast } from 'sonner'
 
 interface ContactPageProps {
   settings?: Record<string, string>
@@ -29,6 +28,7 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
   const inView = useInView(ref, { once: true, margin: '-100px' })
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', service_type: '', message: '' })
 
   const email = settings?.email || 'hello@precisionpros.in'
@@ -49,23 +49,24 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
     if (submitted) setSubmitted(false)
+    if (errorMsg) setErrorMsg(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.name || !form.email || !form.service_type || !form.message) {
-      toast.error('Please fill all required fields.')
+      setErrorMsg('Please fill all required fields.')
       return
     }
     setLoading(true)
+    setErrorMsg(null)
     try {
       await submitContactForm(form)
       setSubmitted(true)
       setForm({ name: '', email: '', phone: '', company: '', service_type: '', message: '' })
       confettiRef.current?.trigger()
-      toast.success('Message sent! We\'ll get back to you soon.')
     } catch {
-      toast.error('Failed to send. Please try WhatsApp or email directly.')
+      setErrorMsg('Failed to send. Please try WhatsApp or email directly.')
     } finally {
       setLoading(false)
     }
@@ -75,7 +76,8 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
     <div className="section-padding relative overflow-hidden">
       <Confetti ref={confettiRef} />
 
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes glitter-bg {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -215,7 +217,7 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="font-mono text-[10px] text-body tracking-widest uppercase mb-0.5">Email Address</p>
-                  <p 
+                  <p
                     className="font-body font-bold text-heading group-hover:text-primary transition-colors duration-300 whitespace-nowrap truncate"
                     style={{ fontSize: 'clamp(9px, 3.1vw, 14px)' }}
                   >
@@ -268,7 +270,7 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
               <div>
                 <label className="block font-mono text-[11px] text-body tracking-widest uppercase mb-2 font-semibold">Project Details *</label>
                 <textarea name="message" value={form.message} onChange={handleChange} rows={5}
-                  placeholder="Describe your project, goals, timeline, and requirements (must be at least 10 characters)..."
+                  placeholder="Describe your project, goals, timeline, and requirements..."
                   className="w-full px-4 py-3.5 rounded-xl border border-border bg-card text-heading font-body text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none" />
                 <p className="text-[10px] text-[#a09888]/60 mt-1 font-mono">Minimum 10 characters required.</p>
               </div>
@@ -286,6 +288,19 @@ export function ContactPage({ settings, serviceTypes = [] }: ContactPageProps) {
                   <CheckCircle2 size={16} className="text-emerald-500 animate-pulse" />
                   <p className="font-body text-xs text-emerald-400 font-medium">
                     Thank you! Your message has been sent. We will contact you within 24 hours.
+                  </p>
+                </motion.div>
+              )}
+
+              {errorMsg && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 justify-center text-center p-3.5 rounded-2xl border border-rose-500/20 bg-rose-500/5 mt-3"
+                >
+                  <span className="text-rose-500 font-bold text-xs">⚠️</span>
+                  <p className="font-body text-xs text-rose-400 font-medium">
+                    {errorMsg}
                   </p>
                 </motion.div>
               )}

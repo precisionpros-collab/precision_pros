@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS works (
   is_visible BOOLEAN DEFAULT true,
   order_index INTEGER DEFAULT 0,
   client_name TEXT,
-  project_url TEXT,
+  project_url TEXT, -- Live link URL
   github_url TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()

@@ -68,7 +68,7 @@ function WorkCard({ work, index }: { work: Work; index: number }) {
         {work.project_url && (
           <a href={work.project_url} target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-gradient-to-r from-[#e3c8a8] via-[#5dc1a4] to-[#ab57ff] text-[#05020c] text-sm font-bold hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 transition-all mt-auto tracking-wide group-hover:scale-[1.01] duration-300">
-            <ExternalLink size={14} /> Live Demo
+            <ExternalLink size={14} /> Live Link
           </a>
         )}
       </div>
@@ -78,6 +78,7 @@ function WorkCard({ work, index }: { work: Work; index: number }) {
 }
 
 export function WorksPage({ works }: { works: Work[] }) {
+  console.log("Works in WorksPage component:", works)
   const ref = useRef(null)
   const [active, setActive] = useState('All')
   const [expanded, setExpanded] = useState(false)

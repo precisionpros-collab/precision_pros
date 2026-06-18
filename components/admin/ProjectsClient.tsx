@@ -93,8 +93,8 @@ export function ProjectsClient({ works, categories }: ProjectsClientProps) {
                 <input value={form.client_name} onChange={e => setForm(p => ({ ...p, client_name: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none" />
               </div>
               <div>
-                <label className="block font-mono text-[11px] text-slate-500 uppercase mb-2">Live Demo URL</label>
-                <input value={form.project_url} onChange={e => setForm(p => ({ ...p, project_url: e.target.value }))} className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none" />
+                <label className="block font-mono text-[11px] text-slate-500 uppercase mb-2">Live Link URL</label>
+                <input value={form.project_url} onChange={e => setForm(p => ({ ...p, project_url: e.target.value }))} placeholder="https://example.com" className="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-sky-300 focus:outline-none" />
               </div>
               <ImageUpload value={form.image_url} onChange={url => setForm(p => ({ ...p, image_url: url }))} folder="projects" label="Project Image (upload file)" />
               <div>

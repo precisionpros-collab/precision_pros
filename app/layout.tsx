@@ -37,9 +37,9 @@ export const metadata: Metadata = {
   keywords: ["AI Development", "Software Development", "Automation", "Machine Learning", "Web Apps", "Mobile Apps"],
   robots: { index: true, follow: true },
   icons: [
-    { rel: 'icon', url: '/images/logo.jpeg', type: 'image/jpeg' },
-    { rel: 'shortcut icon', url: '/images/logo.jpeg', type: 'image/jpeg' },
-    { rel: 'apple-touch-icon', url: '/images/logo.jpeg' },
+    { rel: 'icon', url: '/images/img.jpeg', type: 'image/jpeg' },
+    { rel: 'shortcut icon', url: '/images/img.jpeg', type: 'image/jpeg' },
+    { rel: 'apple-touch-icon', url: '/images/img.jpeg' },
   ],
 };
 

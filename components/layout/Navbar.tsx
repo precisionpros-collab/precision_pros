@@ -103,8 +103,8 @@ export function Navbar({ settings, sectionOrder }: NavbarProps) {
             )}
           >
             {/* Logo */}
-            <Link href="/" className="relative z-10 shrink-0 group">
-              <Logo size="sm" />
+              <Link href="/" className="relative z-10 shrink-0 group">
+              <Logo size="md" />
             </Link>
 
             {/* Desktop navigation — floating pill */}

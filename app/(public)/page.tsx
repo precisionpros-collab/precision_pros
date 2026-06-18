@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { HeroBackground } from '@/components/layout/HeroBackground'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection'
 import { ServicesPage } from '@/components/sections/ServicesPage'
@@ -46,15 +45,12 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col w-full overflow-hidden">
-      {/* Hero section — unique 3D hexagonal tile background */}
       {sections.home && (
-        <div id="home" className="relative bg-[#080a0c]">
-          <HeroBackground />
+        <div id="home" className="relative">
           {sections.home}
         </div>
       )}
 
-      {/* Remaining sections — transparent, shows ThreeDBackground data streams through */}
       {sectionOrder
         .filter(id => id !== 'home')
         .map(id => sections[id] ? <div key={id} id={id}>{sections[id]}</div> : null)}

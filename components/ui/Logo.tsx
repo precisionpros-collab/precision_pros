@@ -10,9 +10,9 @@ interface LogoProps {
 
 export function Logo({ className, iconOnly = false, size = 'md' }: LogoProps) {
   const sizeClasses = {
-    sm: { icon: 'w-9 h-9', text: 'text-lg', subText: 'text-[9px]' },
-    md: { icon: 'w-13 h-13', text: 'text-xl', subText: 'text-[10px]' },
-    lg: { icon: 'w-20 h-20', text: 'text-4xl', subText: 'text-[13px]' },
+    sm: { icon: 'w-14 h-14', text: 'text-lg', subText: 'text-[9px]' },
+    md: { icon: 'w-20 h-20', text: 'text-xl', subText: 'text-[10px]' },
+    lg: { icon: 'w-36 h-36', text: 'text-4xl', subText: 'text-[13px]' },
   }
 
   const currentSize = sizeClasses[size]
@@ -24,13 +24,13 @@ export function Logo({ className, iconOnly = false, size = 'md' }: LogoProps) {
     >
       <div
         className={cn(
-          'relative flex-shrink-0 transition-all duration-500 group-hover:scale-105 overflow-hidden',
+          'relative flex-shrink-0 transition-all duration-500 group-hover:scale-105 overflow-hidden rounded-full border-2 border-slate-200 bg-white flex items-center justify-center p-1',
           currentSize.icon
         )}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/logo.jpeg"
+          src="/images/img.jpeg"
           alt="Precision Pro's Logo"
           className="w-full h-full object-contain"
         />

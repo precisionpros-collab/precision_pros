@@ -7,11 +7,17 @@ import { ThreeDBackground } from './ThreeDBackground'
 
 export function AppBackground() {
   const pathname = usePathname()
-  const [isAtHero, setIsAtHero] = useState(true)
+  const [isAtHero, setIsAtHero] = useState(pathname === '/')
+
+  // Sync state when pathname changes during rendering (prevents setState inside useEffect error)
+  const [prevPathname, setPrevPathname] = useState(pathname)
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
+    setIsAtHero(pathname === '/')
+  }
 
   useEffect(() => {
     if (pathname !== '/') {
-      setIsAtHero(false)
       return
     }
 

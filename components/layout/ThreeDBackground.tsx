@@ -14,18 +14,13 @@ interface DataStream {
   changeTicks: number
 }
 
-const STATIC_BG = (
-  <div
-    className="fixed inset-0 z-[0] pointer-events-none bg-[#030605] bg-[radial-gradient(at_0%_0%,rgba(5,2,12,1)_0px,transparent_60%),radial-gradient(at_100%_100%,rgba(3,7,6,1)_0px,transparent_60%),radial-gradient(at_50%_50%,rgba(12,9,27,0.15)_0px,transparent_70%)]"
-    aria-hidden="true"
-  />
-)
+
 
 export function ThreeDBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const dimCanvasRef = useRef<HTMLCanvasElement>(null)
   const mouseRef = useRef({ tx: 0, ty: 0 })
-  const { liteMode, isMobile, isTouch } = usePerformanceMode()
+  const { liteMode, isTouch } = usePerformanceMode()
 
   // Tunable visual parameters
   const DIM_BLUR_PX = 18
@@ -322,7 +317,7 @@ export function ThreeDBackground() {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       observer.disconnect()
     }
-  }, [liteMode])
+  }, [liteMode, isTouch])
 
   return (
     <div className="fixed inset-0 z-[0] pointer-events-none bg-[#030605] bg-[radial-gradient(at_0%_0%,rgba(5,2,12,1)_0px,transparent_60%),radial-gradient(at_100%_100%,rgba(3,7,6,1)_0px,transparent_60%),radial-gradient(at_50%_50%,rgba(12,9,27,0.15)_0px,transparent_70%)]">

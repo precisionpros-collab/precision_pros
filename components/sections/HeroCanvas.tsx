@@ -84,8 +84,6 @@ export function HeroCanvas() {
     // Colors matching theme
     const colorGold = 'rgba(227, 200, 168, 1)'       // #e3c8a8
     const colorTeal = 'rgba(93, 193, 164, 1)'       // #5dc1a4
-    const colorGoldHex = 0xe3c8a8
-    const colorTealHex = 0x5dc1a4
 
     // 1. Setup Three.js Scene, Camera, Renderer
     const scene = new THREE.Scene()

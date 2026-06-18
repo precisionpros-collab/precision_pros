@@ -8,7 +8,6 @@ import { Confetti, ConfettiRef } from '@/components/ui/Confetti'
 import { CreativeButton } from '@/components/ui/CreativeButton'
 import { Container } from '@/components/ui/Container'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { usePerformanceMode } from '@/hooks/usePerformanceMode'
 import { use3DTilt } from '@/hooks/use3DTilt'
 import { HeroCanvas } from './HeroCanvas'
 
@@ -18,7 +17,6 @@ export function HeroSection({ settings }: HeroSectionProps) {
   const confettiRef = useRef<ConfettiRef>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const reducedMotion = useReducedMotion()
-  const { liteMode } = usePerformanceMode()
   
   // Apply 3D parallax mouse-tilt effect to the entire hero content card
   const tiltRef = use3DTilt(10, 1.01) // 10 degree maximum tilt, 1.01 scaling factor

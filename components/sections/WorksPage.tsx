@@ -60,7 +60,7 @@ function WorkCard({ work, index }: { work: Work; index: number }) {
         <p className="font-body text-sm text-[#a09888] leading-relaxed mb-6 line-clamp-3 flex-grow">{work.description}</p>
         
         <div className="flex flex-wrap gap-1.5 mb-8">
-          {work.tags.map(tag => (
+          {(work.tags || []).map(tag => (
             <span key={tag} className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-[#a09888]/85 text-[10px] font-mono">{tag}</span>
           ))}
         </div>

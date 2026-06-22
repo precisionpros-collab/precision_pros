@@ -19,15 +19,27 @@ const VISIBILITY: Record<string, string> = {
 }
 
 export default async function HomePage() {
-  const [services, works, team, settings, sectionOrder, serviceTypes, testimonials] = await Promise.all([
-    getServices(), getWorks(), getTeamMembers(), getSiteSettings(),
-    getSectionOrder(), getCustomOptions('contact_service_type'),
-    getTestimonials(),
-  ])
+  let services: Awaited<ReturnType<typeof getServices>> = []
+  let works: Awaited<ReturnType<typeof getWorks>> = []
+  let team: Awaited<ReturnType<typeof getTeamMembers>> = []
+  let settings: Awaited<ReturnType<typeof getSiteSettings>> = {}
+  let sectionOrder: Awaited<ReturnType<typeof getSectionOrder>> = ['home', 'services', 'works', 'about', 'testimonials', 'contact']
+  let types: string[] = []
+  let testimonials: Awaited<ReturnType<typeof getTestimonials>> = []
 
+  try {
+    const [s, w, t, st, so, serviceTypes, test] = await Promise.all([
+      getServices(), getWorks(), getTeamMembers(), getSiteSettings(),
+      getSectionOrder(), getCustomOptions('contact_service_type'),
+      getTestimonials(),
+    ])
+    services = s; works = w; team = t; settings = st
+    sectionOrder = so; types = serviceTypes.map(s => s.label); testimonials = test
+  } catch (e) {
+    console.error('Failed to load homepage data:', e)
+  }
 
   const visible = (id: string) => settings[VISIBILITY[id]] !== 'false'
-  const types = serviceTypes.map(s => s.label)
 
   const sections: Record<string, ReactNode> = {
     home: visible('home') && (

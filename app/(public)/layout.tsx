@@ -4,7 +4,16 @@ import { getSiteSettings, getSectionOrder } from '@/lib/actions'
 import { ThemeProvider } from 'next-themes'
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
-  const [settings, sectionOrder] = await Promise.all([getSiteSettings(), getSectionOrder()])
+  let settings: Record<string, string> = {}
+  let sectionOrder: string[] = ['home', 'services', 'works', 'about', 'testimonials', 'contact']
+
+  try {
+    const [s, so] = await Promise.all([getSiteSettings(), getSectionOrder()])
+    settings = s
+    sectionOrder = so
+  } catch (e) {
+    console.error('Failed to load layout data:', e)
+  }
 
   return (
     <ThemeProvider attribute="class" forcedTheme="dark" enableSystem={false}>

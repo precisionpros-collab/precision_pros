@@ -107,10 +107,10 @@ export function TestimonialsSection({
 }: TestimonialsSectionProps) {
   if (testimonials.length === 0) return null
 
-  const projects = settings?.total_projects || `${worksCount || 20}+`
-  const clients = settings?.happy_clients || '15+'
-  const team = settings?.team_size || `${teamCount || 13}`
-  const satisfaction = settings?.success_rate || '100%'
+  const projects = String(settings?.total_projects || `${worksCount || 20}+`)
+  const clients = String(settings?.happy_clients || '15+')
+  const team = String(settings?.team_size || `${teamCount || 13}`)
+  const satisfaction = String(settings?.success_rate || '100%')
 
   const statsItems = [
     {

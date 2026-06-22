@@ -4,8 +4,13 @@ import { redirect } from 'next/navigation'
 import { ThemeProvider } from 'next-themes'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth()
-  if (!session) redirect('/admin/login')
+  try {
+    const session = await auth()
+    if (!session) redirect('/admin/login')
+  } catch (e) {
+    console.error('Auth check failed:', e)
+    redirect('/admin/login')
+  }
 
   return (
     <ThemeProvider attribute="class" forcedTheme="light" enableSystem={false}>

@@ -6,8 +6,16 @@ import { requireAdmin } from './auth-guard'
 import { revalidatePublicSite, revalidateAdminPaths } from './revalidate'
 
 async function afterMutation() {
-  await revalidatePublicSite()
-  await revalidateAdminPaths()
+  try {
+    await revalidatePublicSite()
+  } catch (e) {
+    console.error('Failed to revalidate public site:', e)
+  }
+  try {
+    await revalidateAdminPaths()
+  } catch (e) {
+    console.error('Failed to revalidate admin paths:', e)
+  }
 }
 
 // ─── Public reads ───────────────────────────────────────────
@@ -29,7 +37,8 @@ export async function getWorks(adminMode = false) {
   let query = supabase.from('works').select('*').order('order_index')
   if (!adminMode) query = query.eq('is_visible', true)
   const { data } = await query
-  return data || []
+  // Ensure tags is always an array (Supabase can return null for array columns)
+  return (data || []).map(w => ({ ...w, tags: Array.isArray(w.tags) ? w.tags : [] }))
 }
 
 export async function getTeamMembers(adminMode = false) {

@@ -26,7 +26,7 @@ export function ProjectsClient({ works, categories }: ProjectsClientProps) {
   const openAdd = () => { setEditing(null); setForm(emptyForm); setShowForm(true) }
   const openEdit = (w: Work) => {
     setEditing(w)
-    setForm({ title: w.title, description: w.description, category: w.category, tags: w.tags.join(', '), client_name: w.client_name || '', project_url: w.project_url || '', image_url: w.image_url || '', is_featured: w.is_featured, is_visible: w.is_visible })
+    setForm({ title: w.title, description: w.description, category: w.category, tags: (w.tags || []).join(', '), client_name: w.client_name || '', project_url: w.project_url || '', image_url: w.image_url || '', is_featured: w.is_featured, is_visible: w.is_visible })
     setShowForm(true)
   }
 

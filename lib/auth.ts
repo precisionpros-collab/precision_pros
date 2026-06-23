@@ -68,7 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session
     },
   },
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 1800 },
   cookies: {
     sessionToken: {
       name: process.env.NODE_ENV === "production" ? "__Secure-next-auth.session-token" : "next-auth.session-token",

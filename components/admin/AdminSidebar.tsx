@@ -7,7 +7,7 @@ import { signOut } from 'next-auth/react'
 import {
   LayoutDashboard, Briefcase, Users, Wrench,
   Settings, LogOut, Menu, X, ExternalLink,
-  BarChart3, Tags, Mail, Quote
+  BarChart3, Tags, Mail, Quote, UserCheck
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -68,8 +68,11 @@ function SidebarContent({ pathname, setMobileOpen, handleSignOut }: SidebarConte
       </nav>
 
       <div className="p-4 border-t border-slate-200 space-y-1">
-        <a href="/" target="_blank" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors">
+        <a href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-colors">
           <ExternalLink size={17} /> View Website
+        </a>
+        <a href="https://precision-pros.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-500 hover:text-sky-600 hover:bg-sky-50 transition-colors">
+          <UserCheck size={17} /> Member Portal
         </a>
         <button onClick={handleSignOut} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors">
           <LogOut size={17} /> Sign Out

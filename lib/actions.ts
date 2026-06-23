@@ -244,7 +244,8 @@ export async function uploadImage(formData: FormData, folder: string) {
   if (error) throw new Error(error.message)
 
   const { data: urlData } = supabaseAdmin.storage.from('uploads').getPublicUrl(fileName)
-  await afterMutation()
+  // Note: No afterMutation() here — image upload alone doesn't change page content.
+  // Revalidation happens when the parent form (project/team/service) is saved.
   return { url: urlData.publicUrl }
 }
 
